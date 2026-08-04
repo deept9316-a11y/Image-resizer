@@ -1,64 +1,49 @@
-const imageInput = document.getElementById("imageInput");
-const chooseBtn = document.getElementById("chooseBtn");
-const previewImage = document.getElementById("previewImage");
+// ===== Image Resizer =====
+
+const imageInput = document.getElementById("resizeImage");
+const widthInput = document.getElementById("width");
+const heightInput = document.getElementById("height");
 const resizeBtn = document.getElementById("resizeBtn");
+const canvas = document.getElementById("canvas");
 const downloadBtn = document.getElementById("downloadBtn");
 
-let originalImage = new Image();
+if (imageInput && resizeBtn) {
 
-chooseBtn.addEventListener("click", () => {
-  imageInput.click();
-});
+    resizeBtn.addEventListener("click", () => {
 
-imageInput.addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+        const file = imageInput.files[0];
 
-  const reader = new FileReader();
+        if (!file) {
+            alert("Please select an image.");
+            return;
+        }
 
-  reader.onload = function(event) {
-    originalImage.onload = function() {
-      previewImage.src = originalImage.src;
-      previewImage.style.display = "block";
+        const width = parseInt(widthInput.value);
+        const height = parseInt(heightInput.value);
 
-      document.getElementById("width").value = originalImage.width;
-      document.getElementById("height").value = originalImage.height;
-    };
+        if (!width || !height) {
+            alert("Enter width and height.");
+            return;
+        }
 
-    originalImage.src = event.target.result;
-  };
+        const img = new Image();
 
-  reader.readAsDataURL(file);
-});
+        img.onload = function () {
 
-resizeBtn.addEventListener("click", () => {
+            canvas.width = width;
+            canvas.height = height;
 
-  if (!originalImage.src) {
-    alert("Please upload an image first.");
-    return;
-  }
+            const ctx = canvas.getContext("2d");
 
-  const width = parseInt(document.getElementById("width").value);
-  const height = parseInt(document.getElementById("height").value);
-  const quality = document.getElementById("quality").value / 100;
-  const format = document.getElementById("format").value;
+            ctx.drawImage(img, 0, 0, width, height);
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+            downloadBtn.href = canvas.toDataURL("image/png");
+            downloadBtn.download = "resized-image.png";
+            downloadBtn.style.display = "inline-block";
+        };
 
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(originalImage, 0, 0, width, height);
+        img.src = URL.createObjectURL(file);
 
-  const output = canvas.toDataURL(format, quality);
+    });
 
-  previewImage.src = output;
-  downloadBtn.href = output;
-
-  if (format === "image/png")
-    downloadBtn.download = "image.png";
-  else if (format === "image/jpeg")
-    downloadBtn.download = "image.jpg";
-  else
-    downloadBtn.download = "image.webp";
-});
+}
