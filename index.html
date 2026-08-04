@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Resizer</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f4f4;
+text-align:center;
+padding:20px;
+}
+.container{
+background:#fff;
+padding:20px;
+max-width:500px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+img{
+max-width:100%;
+margin-top:15px;
+border-radius:8px;
+}
+input,button{
+margin:10px;
+padding:10px;
+}
+button{
+background:#007bff;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+button:hover{
+background:#0056b3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>📷 Image Resizer</h2>
+
+<input type="file" id="upload" accept="image/*"><br>
+
+<label>Width:</label>
+<input type="number" id="width" value="300">
+
+<label>Height:</label>
+<input type="number" id="height" value="300">
+
+<br>
+
+<button onclick="resizeImage()">Resize Image</button>
+
+<br>
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<img id="preview">
+
+<br>
+
+<a id="download" download="resized-image.png">
+<button>⬇ Download Image</button>
+</a>
+
+</div>
+
+<script>
+
+let uploadedImage=new Image();
+
+document.getElementById("upload").addEventListener("change",function(e){
+
+const file=e.target.files[0];
+
+if(!file) return;
+
+const reader=new FileReader();
+
+reader.onload=function(event){
+uploadedImage.src=event.target.result;
+}
+
+reader.readAsDataURL(file);
+
+});
+
+function resizeImage(){
+
+const width=parseInt(document.getElementById("width").value);
+
+const height=parseInt(document.getElementById("height").value);
+
+const canvas=document.getElementById("canvas");
+
+const ctx=canvas.getContext("2d");
+
+canvas.width=width;
+
+canvas.height=height;
+
+ctx.drawImage(uploadedImage,0,0,width,height);
+
+const dataURL=canvas.toDataURL("image/png");
+
+document.getElementById("preview").src=dataURL;
+
+document.getElementById("download").href=dataURL;
+
+}
+
+</script>
+
+</body>
+</html>
