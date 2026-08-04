@@ -1,80 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DeepT Image Resizer</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolHub - Image & PDF Tools</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+<header>
+    <div class="logo">
+        <h2>ToolHub</h2>
+    </div>
 
-<h1>🖼️ DeepT Image Resizer</h1>
-<p class="subtitle">Resize & Compress Images Online Free</p>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="image-tools.html">Image Tools</a></li>
+            <li><a href="pdf-tools.html">PDF Tools</a></li>
+            <li><a href="photo-editor.html">Photo Editor</a></li>
+            <li><a href="ai-tools.html">AI Tools</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 
-<div class="upload-box" id="dropArea">
+<section class="hero">
+    <h1>All Image & PDF Tools in One Place</h1>
 
-<input type="file" id="imageInput" accept="image/*" hidden>
+    <p>
+        Resize Images, Convert JPG to PDF, PDF to JPG,
+        Compress Images, Photo Editing, AI Background
+        Remover and many more tools.
+    </p>
 
-<p>📂 Drag & Drop Image Here</p>
-
-<button id="chooseBtn">Choose Image</button>
-
-</div>
-
-<div class="preview">
-
-<img id="previewImage">
-
-</div>
-
-<div class="controls">
-
-<div>
-<label>Width (px)</label>
-<input type="number" id="width">
-</div>
-
-<div>
-<label>Height (px)</label>
-<input type="number" id="height">
-</div>
-
-<div>
-<label>Quality</label>
-<input type="range" id="quality" min="10" max="100" value="90">
-</div>
-
-<div>
-<label>Format</label>
-
-<select id="format">
-<option value="image/png">PNG</option>
-<option value="image/jpeg">JPG</option>
-<option value="image/webp">WEBP</option>
-</select>
-
-</div>
-
-<button id="resizeBtn">Resize Image</button>
-
-<a id="downloadBtn">
-<button>Download</button>
-</a>
-
-</div>
-
-</div>
-
-<!-- JPG to PDF Tool -->
-<section class="tool-card">
-  ...
+    <a href="image-tools.html" class="btn">
+        Get Started
+    </a>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Part 2 starts here -->
+
 <script src="script.js"></script>
+
 </body>
 </html>
