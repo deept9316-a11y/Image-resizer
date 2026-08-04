@@ -114,3 +114,39 @@ nav ul li a:hover{
     border-radius:10px;
     box-shadow:0 5px 15px rgba(0,0,0,.1);
 }
+/* Footer */
+
+.footer{
+    background:#111827;
+    color:#fff;
+    padding:50px 20px;
+    text-align:center;
+    margin-top:50px;
+}
+
+.footer h2{
+    margin-bottom:15px;
+}
+
+.footer p{
+    margin:10px 0;
+}
+
+.footer-links{
+    margin:20px 0;
+}
+
+.footer-links a{
+    color:#fff;
+    text-decoration:none;
+    margin:0 12px;
+}
+
+.footer-links a:hover{
+    color:#ffd54f;
+}
+
+.copyright{
+    margin-top:20px;
+    color:#ccc;
+}
