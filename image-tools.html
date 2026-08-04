@@ -58,7 +58,39 @@
     </div>
 
 </section>
+<!-- Image Resizer Tool -->
 
+<section class="tool-card">
+
+    <h2>🖼️ Image Resizer</h2>
+
+    <p>Select an image and choose a new width & height.</p>
+
+    <input type="file" id="resizeImage" accept="image/*">
+
+    <br><br>
+
+    <input type="number" id="width" placeholder="Width (px)">
+
+    <input type="number" id="height" placeholder="Height (px)">
+
+    <br><br>
+
+    <button id="resizeBtn" class="tool-btn">
+        Resize Image
+    </button>
+
+    <br><br>
+
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <a id="downloadBtn"
+       class="tool-btn"
+       style="display:none;">
+       Download Image
+    </a>
+
+</section>
 <script src="script.js"></script>
 
 </body>
