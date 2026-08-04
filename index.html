@@ -5,32 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DeepT Image Resizer</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-/* Part 2 CSS यहाँ आएगा */
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 <body>
 
-<header>
-<h1>DeepT Image Resizer</h1>
-<p>Resize • Compress • Convert Images Online</p>
-</header>
-
 <div class="container">
 
+<h1>🖼️ DeepT Image Resizer</h1>
+<p class="subtitle">Resize & Compress Images Online Free</p>
+
 <div class="upload-box" id="dropArea">
-<p>📤 Drag & Drop Image Here</p>
-<p>or</p>
 
 <input type="file" id="imageInput" accept="image/*" hidden>
 
-<button onclick="document.getElementById('imageInput').click()">
-Choose Image
-</button>
+<p>📂 Drag & Drop Image Here</p>
+
+<button id="chooseBtn">Choose Image</button>
 
 </div>
 
@@ -42,15 +33,22 @@ Choose Image
 
 <div class="controls">
 
-<label>Width</label>
+<div>
+<label>Width (px)</label>
 <input type="number" id="width">
+</div>
 
-<label>Height</label>
+<div>
+<label>Height (px)</label>
 <input type="number" id="height">
+</div>
 
+<div>
 <label>Quality</label>
 <input type="range" id="quality" min="10" max="100" value="90">
+</div>
 
+<div>
 <label>Format</label>
 
 <select id="format">
@@ -59,389 +57,19 @@ Choose Image
 <option value="image/webp">WEBP</option>
 </select>
 
-<button id="resizeBtn">
-Resize Image
-</button>
+</div>
 
-<a id="downloadBtn" download="deept-image">
-<button>
-Download
-</button>
+<button id="resizeBtn">Resize Image</button>
+
+<a id="downloadBtn">
+<button>Download</button>
 </a>
 
 </div>
 
 </div>
 
-<footer>
-
-Made with ❤️ by DeepT
-
-</footer>
-
-<script>
-
-/* Part 3 JavaScript यहाँ आएगा */
-
-</script>
+<script src="script.js"></script>
 
 </body>
-</html>*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:linear-gradient(135deg,#4f46e5,#7c3aed,#06b6d4);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:30px 15px;
-}
-
-header{
-text-align:center;
-color:#fff;
-margin-bottom:25px;
-}
-
-header h1{
-font-size:2.2rem;
-font-weight:700;
-}
-
-header p{
-margin-top:8px;
-opacity:.9;
-}
-
-.container{
-width:100%;
-max-width:900px;
-background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-border-radius:20px;
-padding:25px;
-box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.upload-box{
-border:3px dashed rgba(255,255,255,.7);
-border-radius:16px;
-padding:40px 20px;
-text-align:center;
-color:#fff;
-cursor:pointer;
-transition:.3s;
-}
-
-.upload-box:hover{
-background:rgba(255,255,255,.15);
-}
-
-.upload-box button{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:#fff;
-color:#4f46e5;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-}
-
-.preview{
-margin-top:25px;
-text-align:center;
-}
-
-.preview img{
-max-width:100%;
-border-radius:15px;
-display:none;
-box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
-
-.controls{
-margin-top:25px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.controls label{
-color:#fff;
-font-weight:600;
-}
-
-.controls input,
-.controls select{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-outline:none;
-}
-
-#resizeBtn,
-#downloadBtn button{
-margin-top:10px;
-padding:14px;
-border:none;
-border-radius:12px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-background:#10b981;
-color:#fff;
-transition:.3s;
-width:100%;
-}
-
-#resizeBtn:hover,
-#downloadBtn button:hover{
-background:#059669;
-}
-
-footer{
-margin-top:30px;
-color:#fff;
-font-size:14px;
-opacity:.9;
-text-align:center;
-}
-
-@media(max-width:700px){
-.controls{
-grid-template-columns:1fr;
-}
-header h1{
-font-size:1.7rem;
-}
-}
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:linear-gradient(135deg,#4f46e5,#7c3aed,#06b6d4);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-padding:30px 15px;
-}
-
-header{
-text-align:center;
-color:#fff;
-margin-bottom:25px;
-}
-
-header h1{
-font-size:2.2rem;
-font-weight:700;
-}
-
-header p{
-margin-top:8px;
-opacity:.9;
-}
-
-.container{
-width:100%;
-max-width:900px;
-background:rgba(255,255,255,.15);
-backdrop-filter:blur(15px);
-border-radius:20px;
-padding:25px;
-box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.upload-box{
-border:3px dashed rgba(255,255,255,.7);
-border-radius:16px;
-padding:40px 20px;
-text-align:center;
-color:#fff;
-cursor:pointer;
-transition:.3s;
-}
-
-.upload-box:hover{
-background:rgba(255,255,255,.15);
-}
-
-.upload-box button{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:#fff;
-color:#4f46e5;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-}
-
-.preview{
-margin-top:25px;
-text-align:center;
-}
-
-.preview img{
-max-width:100%;
-border-radius:15px;
-display:none;
-box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
-
-.controls{
-margin-top:25px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.controls label{
-color:#fff;
-font-weight:600;
-}
-
-.controls input,
-.controls select{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-outline:none;
-}
-
-#resizeBtn,
-#downloadBtn button{
-margin-top:10px;
-padding:14px;
-border:none;
-border-radius:12px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-background:#10b981;
-color:#fff;
-transition:.3s;
-width:100%;
-}
-
-#resizeBtn:hover,
-#downloadBtn button:hover{
-background:#059669;
-}
-
-footer{
-margin-top:30px;
-color:#fff;
-font-size:14px;
-opacity:.9;
-text-align:center;
-}
-
-@media(max-width:700px){
-.controls{
-grid-template-columns:1fr;
-}
-header h1{
-font-size:1.7rem;
-}
-}const imageInput = document.getElementById("imageInput");
-const previewImage = document.getElementById("previewImage");
-const resizeBtn = document.getElementById("resizeBtn");
-const downloadBtn = document.getElementById("downloadBtn");
-const dropArea = document.getElementById("dropArea");
-
-let originalImage = new Image();
-
-imageInput.addEventListener("change", loadImage);
-
-function loadImage(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-        originalImage.onload = function () {
-            previewImage.src = originalImage.src;
-            previewImage.style.display = "block";
-
-            document.getElementById("width").value = originalImage.width;
-            document.getElementById("height").value = originalImage.height;
-        };
-
-        originalImage.src = event.target.result;
-    };
-
-    reader.readAsDataURL(file);
-}
-
-dropArea.addEventListener("dragover", function(e){
-    e.preventDefault();
-    dropArea.style.borderColor="#00ff99";
-});
-
-dropArea.addEventListener("dragleave", function(){
-    dropArea.style.borderColor="#ffffff";
-});
-
-dropArea.addEventListener("drop", function(e){
-    e.preventDefault();
-
-    const file = e.dataTransfer.files[0];
-
-    if(file){
-        imageInput.files = e.dataTransfer.files;
-        loadImage({target:{files:[file]}});
-    }
-
-    dropArea.style.borderColor="#ffffff";
-});
-
-resizeBtn.addEventListener("click", function(){
-
-    if(!originalImage.src){
-        alert("Please upload an image first.");
-        return;
-    }
-
-    const width = parseInt(document.getElementById("width").value);
-    const height = parseInt(document.getElementById("height").value);
-    const quality = parseInt(document.getElementById("quality").value)/100;
-    const format = document.getElementById("format").value;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(originalImage,0,0,width,height);
-
-    const output = canvas.toDataURL(format,quality);
-
-    previewImage.src = output;
-
-    downloadBtn.href = output;
-
-    if(format=="image/jpeg")
-        downloadBtn.download="deept-image.jpg";
-    else if(format=="image/webp")
-        downloadBtn.download="deept-image.webp";
-    else
-        downloadBtn.download="deept-image.png";
-
-});
+</html>
