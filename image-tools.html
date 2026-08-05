@@ -97,3 +97,34 @@
 
 </body>
 </html>
+<section class="tool-card">
+
+<h2>📦 Image Compressor</h2>
+
+<p>Select an image and choose compression quality.</p>
+
+<input type="file" id="compressImage" accept="image/*">
+
+<br><br>
+
+<label>Quality:</label>
+
+<input type="range" id="quality" min="10" max="100" value="70">
+
+<span id="qualityValue">70%</span>
+
+<br><br>
+
+<button id="compressBtn" class="tool-btn">
+Compress Image
+</button>
+
+<br><br>
+
+<a id="downloadCompressed"
+class="tool-btn"
+style="display:none;">
+Download Compressed Image
+</a>
+
+</section>
