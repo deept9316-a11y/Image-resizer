@@ -1,86 +1,127 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToolHub - High Quality Image Resizer & Converter</title>
+    <title>ToolHub - Free Online Image & PDF Tools</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- Header Navigation -->
     <header class="navbar">
         <div class="logo">🛠️ ToolHub</div>
         <nav>
-            <a href="index.html" class="active">Image Resizer</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="#tools-section">All Tools</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </nav>
     </header>
 
-    <main class="container">
-        <div class="hero-section">
-            <h1>Free Online High-Quality Image Resizer</h1>
-            <p>इमेज को आसानी से Resize, Compress और Convert करें — बिना क्वालिटी खराब किए।</p>
+    <!-- Hero & Live Search -->
+    <section class="hero">
+        <h1>Free Online Image Editing & Conversion Tools</h1>
+        <p>Fast, Secure, and Client-Side Processing. No File Uploads Required.</p>
+        <div class="search-box">
+            <input type="text" id="toolSearch" placeholder="Search for tools (e.g., JPG to PNG, Resizer, BG Remover)..." onkeyup="filterTools()">
+        </div>
+    </section>
+
+    <!-- Tools Grid Container -->
+    <main class="container" id="tools-section">
+        
+        <!-- Category: Image Converters -->
+        <h2 class="category-title">Image Converters</h2>
+        <div class="tools-grid">
+            <a href="tools/jpg-to-png.html" class="tool-card">
+                <div class="icon">🔄</div>
+                <h3>JPG to PNG</h3>
+                <p>Convert JPG images to transparent PNG format effortlessly.</p>
+            </a>
+            <a href="tools/png-to-jpg.html" class="tool-card">
+                <div class="icon">🖼️</div>
+                <h3>PNG to JPG</h3>
+                <p>Convert PNG images into lightweight JPG format.</p>
+            </a>
+            <a href="tools/webp-to-jpg.html" class="tool-card">
+                <div class="icon">⚡</div>
+                <h3>WEBP to JPG</h3>
+                <p>Convert modern WEBP images to widely supported JPGs.</p>
+            </a>
+            <a href="tools/jpg-to-webp.html" class="tool-card">
+                <div class="icon">🌐</div>
+                <h3>JPG to WEBP</h3>
+                <p>Optimize images for web performance by converting to WEBP.</p>
+            </a>
         </div>
 
-        <div class="tool-card">
-            <!-- Upload Area -->
-            <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
-                <div class="icon">📁</div>
-                <p>यहाँ इमेज Drag & Drop करें या <span>Browse</span> करें</p>
-                <input type="file" id="imageInput" accept="image/*">
-            </div>
-
-            <!-- Configuration Options -->
-            <div class="controls" id="controls">
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="widthInput">Width (px):</label>
-                        <input type="number" id="widthInput" placeholder="Width">
-                    </div>
-                    <div class="form-group">
-                        <label for="heightInput">Height (px):</label>
-                        <input type="number" id="heightInput" placeholder="Height">
-                    </div>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="aspectRatio" checked>
-                    <label for="aspectRatio">Maintain Aspect Ratio (अनुपात बनाए रखें)</label>
-                </div>
-
-                <div class="grid-2">
-                    <div class="form-group">
-                        <label for="formatSelect">Format:</label>
-                        <select id="formatSelect">
-                            <option value="image/jpeg">JPEG / JPG</option>
-                            <option value="image/png">PNG</option>
-                            <option value="image/webp">WEBP</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="qualityInput">Quality (10% - 100%):</label>
-                        <input type="range" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.9">
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" id="resizeBtn">Resize Image Now</button>
-            </div>
-
-            <!-- Preview & Download Section -->
-            <div class="preview-box" id="previewContainer">
-                <h3>Resized Image Preview</h3>
-                <p id="sizeInfo" class="size-info"></p>
-                <img id="previewImg" src="" alt="Preview">
-                <a id="downloadBtn" class="btn btn-success" download="resized-image.jpg">Download Resized Image</a>
-            </div>
+        <!-- Category: Resizing & Editing -->
+        <h2 class="category-title">Resizing & Editing</h2>
+        <div class="tools-grid">
+            <a href="tools/image-resizer.html" class="tool-card">
+                <div class="icon">📐</div>
+                <h3>Image Resizer</h3>
+                <p>Change pixel dimensions (Width & Height) without losing quality.</p>
+            </a>
+            <a href="tools/bg-remover.html" class="tool-card">
+                <div class="icon">✂️</div>
+                <h3>Background Remover</h3>
+                <p>Remove backgrounds from photos instantly for free.</p>
+            </a>
+            <a href="tools/image-compressor.html" class="tool-card">
+                <div class="icon">📉</div>
+                <h3>Image Compressor</h3>
+                <p>Reduce file size in KB/MB while retaining maximum resolution.</p>
+            </a>
+            <a href="tools/crop-image.html" class="tool-card">
+                <div class="icon">✂️</div>
+                <h3>Crop Image</h3>
+                <p>Crop unwanted areas from your photos easily.</p>
+            </a>
         </div>
+
+        <!-- Category: PDF & Utilities -->
+        <h2 class="category-title">PDF & Utility Tools</h2>
+        <div class="tools-grid">
+            <a href="tools/jpg-to-pdf.html" class="tool-card">
+                <div class="icon">📄</div>
+                <h3>JPG to PDF</h3>
+                <p>Combine multiple images into a single PDF document.</p>
+            </a>
+            <a href="tools/pdf-to-jpg.html" class="tool-card">
+                <div class="icon">📸</div>
+                <h3>PDF to JPG</h3>
+                <p>Extract high-resolution images from PDF files.</p>
+            </a>
+            <a href="tools/qr-generator.html" class="tool-card">
+                <div class="icon">📱</div>
+                <h3>QR Code Generator</h3>
+                <p>Create custom downloadable QR codes instantly.</p>
+            </a>
+        </div>
+
     </main>
 
     <footer>
-        <p>© 2026 ToolHub. All Rights Reserved.</p>
+        <p>© 2026 ToolHub. All Rights Reserved. Client-Side Safe & Fast Processing.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Live Tool Search Filter
+        function filterTools() {
+            let input = document.getElementById('toolSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('tool-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+                if (title.includes(input)) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
