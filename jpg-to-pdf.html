@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to PDF Converter - ToolHub</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- jsPDF Library for client-side PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        .tool-container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .dropzone {
+            border: 2px dashed #3b82f6;
+            background: #eff6ff;
+            padding: 35px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .preview-box {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .preview-box img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>📄 JPG to PDF Converter</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Convert JPG images into a downloadable PDF file.</p>
+
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
+                <p>📷 Drag & Drop JPG image here or <strong>Browse</strong></p>
+                <input type="file" id="imageInput" accept="image/jpeg, image/jpg" style="display:none;">
+            </div>
+
+            <div class="preview-box" id="previewContainer">
+                <img id="previewImg" src="" alt="Selected Preview">
+                <br>
+                <button id="convertPdfBtn" class="btn btn-success" style="margin-top: 10px;">Download PDF</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImg = document.getElementById('previewImg');
+        const convertPdfBtn = document.getElementById('convertPdfBtn');
+
+        let loadedImage = new Image();
+
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                loadedImage.src = e.target.result;
+                previewImg.src = e.target.result;
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        });
+
+        convertPdfBtn.addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: loadedImage.width > loadedImage.height ? 'landscape' : 'portrait',
+                unit: 'px',
+                format: [loadedImage.width, loadedImage.height]
+            });
+
+            doc.addImage(loadedImage.src, 'JPEG', 0, 0, loadedImage.width, loadedImage.height);
+            doc.save('document.pdf');
+        });
+    </script>
+</body>
+</html>
+
