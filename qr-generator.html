@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator - ToolHub</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        .preview-box {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .preview-box img {
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>📱 QR Code Generator</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Generate downloadable QR codes for text, URLs, or contact information.</p>
+
+            <div class="form-group">
+                <label for="qrText">Enter Text or URL:</label>
+                <input type="text" id="qrText" placeholder="e.g. https://yourwebsite.com">
+            </div>
+
+            <button class="btn btn-primary" id="generateBtn">Generate QR Code</button>
+
+            <div class="preview-box" id="previewContainer">
+                <img id="qrImg" src="" alt="QR Code">
+                <br>
+                <a id="downloadBtn" class="btn btn-success" download="qrcode.png">Download QR Code</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const qrText = document.getElementById('qrText');
+        const generateBtn = document.getElementById('generateBtn');
+        const previewContainer = document.getElementById('previewContainer');
+        const qrImg = document.getElementById('qrImg');
+        const downloadBtn = downloadBtn = document.getElementById('downloadBtn');
+
+        generateBtn.addEventListener('click', () => {
+            const val = qrText.value.trim();
+            if (!val) {
+                alert('Please enter text or a URL.');
+                return;
+            }
+
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(val)}`;
+            qrImg.src = qrUrl;
+            downloadBtn.href = qrUrl;
+            previewContainer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+
