@@ -1,138 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ToolHub - Home</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToolHub - High Quality Image Resizer & Converter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="header">
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="index.html" class="active">Image Resizer</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
 
-<div class="logo">
-🛠 ToolHub
-</div>
+    <main class="container">
+        <div class="hero-section">
+            <h1>Free Online High-Quality Image Resizer</h1>
+            <p>इमेज को आसानी से Resize, Compress और Convert करें — बिना क्वालिटी खराब किए।</p>
+        </div>
 
-<nav>
+        <div class="tool-card">
+            <!-- Upload Area -->
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
+                <div class="icon">📁</div>
+                <p>यहाँ इमेज Drag & Drop करें या <span>Browse</span> करें</p>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
 
-<a href="index.html" class="active">Home</a>
+            <!-- Configuration Options -->
+            <div class="controls" id="controls">
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="widthInput">Width (px):</label>
+                        <input type="number" id="widthInput" placeholder="Width">
+                    </div>
+                    <div class="form-group">
+                        <label for="heightInput">Height (px):</label>
+                        <input type="number" id="heightInput" placeholder="Height">
+                    </div>
+                </div>
 
-<a href="image-tools.html">Image Tools</a>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="aspectRatio" checked>
+                    <label for="aspectRatio">Maintain Aspect Ratio (अनुपात बनाए रखें)</label>
+                </div>
 
-<a href="pdf-tools.html">PDF Tools</a>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="formatSelect">Format:</label>
+                        <select id="formatSelect">
+                            <option value="image/jpeg">JPEG / JPG</option>
+                            <option value="image/png">PNG</option>
+                            <option value="image/webp">WEBP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="qualityInput">Quality (10% - 100%):</label>
+                        <input type="range" id="qualityInput" min="0.1" max="1.0" step="0.1" value="0.9">
+                    </div>
+                </div>
 
-<a href="photo-editor.html">Photo Editor</a>
+                <button class="btn btn-primary" id="resizeBtn">Resize Image Now</button>
+            </div>
 
-<a href="ai-tools.html">AI Tools</a>
+            <!-- Preview & Download Section -->
+            <div class="preview-box" id="previewContainer">
+                <h3>Resized Image Preview</h3>
+                <p id="sizeInfo" class="size-info"></p>
+                <img id="previewImg" src="" alt="Preview">
+                <a id="downloadBtn" class="btn btn-success" download="resized-image.jpg">Download Resized Image</a>
+            </div>
+        </div>
+    </main>
 
-<a href="about.html">About</a>
+    <footer>
+        <p>© 2026 ToolHub. All Rights Reserved.</p>
+    </footer>
 
-<a href="contact.html">Contact</a>
-
-</nav>
-
-</header>
-
-<section class="hero">
-
-<h1>All Online Image & PDF Tools</h1>
-
-<p>Resize, Compress, Convert, Edit Images & PDF Free.</p>
-
-<a href="image-tools.html" class="tool-btn">
-Start Now
-</a>
-
-</section>
-
-<section class="tools-grid">
-
-<div class="tool-card">
-
-<h2>🖼 Image Tools</h2>
-
-<p>
-
-Resize, Compress, Crop, Convert, Background Remover
-
-</p>
-
-<a href="image-tools.html" class="tool-btn">
-
-Open
-
-</a>
-
-</div>
-
-<div class="tool-card">
-
-<h2>📄 PDF Tools</h2>
-
-<p>
-
-JPG to PDF, PDF to JPG, Merge, Split PDF
-
-</p>
-
-<a href="pdf-tools.html" class="tool-btn">
-
-Open
-
-</a>
-
-</div>
-
-<div class="tool-card">
-
-<h2>🎨 Photo Editor</h2>
-
-<p>
-
-Professional Online Photo Editing
-
-</p>
-
-<a href="photo-editor.html" class="tool-btn">
-
-Open
-
-</a>
-
-</div>
-
-<div class="tool-card">
-
-<h2>🤖 AI Tools</h2>
-
-<p>
-
-AI Background Remover, AI Enhancer, AI Upscaler
-
-</p>
-
-<a href="ai-tools.html" class="tool-btn">
-
-Open
-
-</a>
-
-</div>
-
-</section>
-
-<footer>
-
-<p>
-
-© 2026 ToolHub. All Rights Reserved.
-
-</p>
-
-</footer>
-
+    <script src="script.js"></script>
 </body>
 </html>
