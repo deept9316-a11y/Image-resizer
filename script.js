@@ -1,128 +1,122 @@
-// ===============================
-// OPEN TOOL
-// ===============================
+// DOM Elements
+const imageInput = document.getElementById('imageInput');
+const dropzone = document.getElementById('dropzone');
+const controls = document.getElementById('controls');
+const widthInput = document.getElementById('widthInput');
+const heightInput = document.getElementById('heightInput');
+const aspectRatio = document.getElementById('aspectRatio');
+const formatSelect = document.getElementById('formatSelect');
+const qualityInput = document.getElementById('qualityInput');
+const resizeBtn = document.getElementById('resizeBtn');
+const previewContainer = document.getElementById('previewContainer');
+const previewImg = document.getElementById('previewImg');
+const downloadBtn = document.getElementById('downloadBtn');
+const sizeInfo = document.getElementById('sizeInfo');
 
-function openTool(id){
+let originalImage = new Image();
+let originalAspectRatio = 1;
 
-document.querySelectorAll(".tool-box").forEach(function(box){
-box.style.display="none";
+// 1. Image Upload Handler
+imageInput.addEventListener('change', handleImageSelect);
+
+// Drag & Drop Functionality
+dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropzone.style.borderColor = '#2ecc71';
 });
 
-document.getElementById(id).style.display="block";
-
-window.scrollTo({
-top:document.getElementById(id).offsetTop-20,
-behavior:"smooth"
+dropzone.addEventListener('dragleave', () => {
+    dropzone.style.borderColor = '#3498db';
 });
 
+dropzone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropzone.style.borderColor = '#3498db';
+    if (e.dataTransfer.files.length > 0) {
+        imageInput.files = e.dataTransfer.files;
+        handleImageSelect();
+    }
+});
+
+function handleImageSelect() {
+    const file = imageInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        originalImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
-// ===============================
-// IMAGE RESIZER
-// ===============================
+// When Image Loads in Memory
+originalImage.onload = function () {
+    widthInput.value = originalImage.width;
+    heightInput.value = originalImage.height;
+    originalAspectRatio = originalImage.width / originalImage.height;
 
-const resizeBtn=document.getElementById("resizeBtn");
-
-if(resizeBtn){
-
-resizeBtn.addEventListener("click",function(){
-
-const file=document.getElementById("resizeImage").files[0];
-
-if(!file){
-alert("Select Image");
-return;
-}
-
-const width=parseInt(document.getElementById("width").value);
-
-const height=parseInt(document.getElementById("height").value);
-
-if(!width||!height){
-alert("Enter Width & Height");
-return;
-}
-
-const img=new Image();
-
-img.onload=function(){
-
-const canvas=document.getElementById("canvas");
-
-canvas.width=width;
-
-canvas.height=height;
-
-const ctx=canvas.getContext("2d");
-
-ctx.drawImage(img,0,0,width,height);
-
-const download=document.getElementById("downloadBtn");
-
-download.href=canvas.toDataURL("image/png");
-
-download.download="resized-image.png";
-
-download.style.display="inline-block";
-
+    // Show controls
+    controls.style.display = 'block';
+    previewContainer.style.display = 'none';
 };
 
-img.src=URL.createObjectURL(file);
-
+// 2. Aspect Ratio Maintenance
+widthInput.addEventListener('input', () => {
+    if (aspectRatio.checked && widthInput.value) {
+        heightInput.value = Math.round(widthInput.value / originalAspectRatio);
+    }
 });
 
-}
-
-// ===============================
-// IMAGE COMPRESSOR
-// ===============================
-
-const compressBtn=document.getElementById("compressBtn");
-
-if(compressBtn){
-
-compressBtn.addEventListener("click",function(){
-
-const file=document.getElementById("compressImage").files[0];
-
-if(!file){
-alert("Select Image");
-return;
-}
-
-const quality=document.getElementById("quality").value/100;
-
-const img=new Image();
-
-img.onload=function(){
-
-const canvas=document.createElement("canvas");
-
-canvas.width=img.width;
-
-canvas.height=img.height;
-
-const ctx=canvas.getContext("2d");
-
-ctx.drawImage(img,0,0);
-
-canvas.toBlob(function(blob){
-
-const download=document.getElementById("downloadCompressed");
-
-download.href=URL.createObjectURL(blob);
-
-download.download="compressed-image.jpg";
-
-download.style.display="inline-block";
-
-},"image/jpeg",quality);
-
-};
-
-img.src=URL.createObjectURL(file);
-
+heightInput.addEventListener('input', () => {
+    if (aspectRatio.checked && heightInput.value) {
+        widthInput.value = Math.round(heightInput.value * originalAspectRatio);
+    }
 });
 
-}
-```
+// 3. Canvas Resizing Process
+resizeBtn.addEventListener('click', () => {
+    const newWidth = parseInt(widthInput.value);
+    const newHeight = parseInt(heightInput.value);
+    const format = formatSelect.value;
+    const quality = parseFloat(qualityInput.value);
+
+    if (!newWidth || !newHeight) {
+        alert('कृपया वैध (Valid) Width और Height दर्ज करें।');
+        return;
+    }
+
+    // HTML5 Offscreen Canvas का उपयोग
+    const canvas = document.createElement('canvas');
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    const ctx = canvas.getContext('2d');
+
+    // Smooth Image Rendering / Anti-Aliasing Setting
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
+    // Canvas पर इमेज ड्रॉ करें
+    ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+
+    // Canvas को Data URL में बदलें
+    const resizedDataUrl = canvas.toDataURL(format, quality);
+
+    // Output Extension निर्धारित करें
+    let ext = 'jpg';
+    if (format === 'image/png') ext = 'png';
+    if (format === 'image/webp') ext = 'webp';
+
+    // Output UI अपडेशन
+    previewImg.src = resizedDataUrl;
+    downloadBtn.href = resizedDataUrl;
+    downloadBtn.download = `resized_image.${ext}`;
+    
+    // फ़ाइल का अनुमानित साइज़ दिखाएं
+    const head = 'data:' + format + ';base64,';
+    const sizeInBytes = Math.round((resizedDataUrl.length - head.length) * 3 / 4);
+    const sizeInKB = (sizeInBytes / 1024).toFixed(2);
+    sizeInfo.innerText = `नया साइज़: ${newWidth}x${newHeight} px (~${sizeInKB} KB)`;
+
+    previewContainer.style.display = 'block';
+});
