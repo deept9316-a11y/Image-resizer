@@ -6,58 +6,60 @@
 <title>Image Tools - ToolHub</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header class="header">
-    <h1>🛠 ToolHub</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="image-tools.html" class="active">Image Tools</a>
-        <a href="pdf-tools.html">PDF Tools</a>
-        <a href="photo-editor.html">Photo Editor</a>
-        <a href="ai-tools.html">AI Tools</a>
-    </nav>
+<div class="logo">ToolHub</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="image-tools.html" class="active">Image Tools</a>
+<a href="pdf-tools.html">PDF Tools</a>
+<a href="photo-editor.html">Photo Editor</a>
+<a href="ai-tools.html">AI Tools</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</nav>
 </header>
 
 <section class="hero">
-    <h1>Image Tools</h1>
-    <p>Select any tool below.</p>
+<h1>Image Tools</h1>
+<p>Select any tool below</p>
 </section>
 
-<div class="tools-grid">
+<section class="tools-grid">
 
 <div class="tool-card">
-<h2>🖼 Image Resizer</h2>
-<p>Resize any image.</p>
+<h2>🖼️ Image Resizer</h2>
+<p>Resize images without losing quality.</p>
 <button class="tool-btn" onclick="openTool('resizer')">Open Tool</button>
 </div>
 
 <div class="tool-card">
 <h2>📦 Image Compressor</h2>
-<p>Compress image size.</p>
+<p>Reduce image size easily.</p>
 <button class="tool-btn" onclick="openTool('compressor')">Open Tool</button>
 </div>
 
 <div class="tool-card">
-<h2>✂ Crop Image</h2>
-<p>Crop images easily.</p>
+<h2>✂️ Crop Image</h2>
+<p>Crop any image.</p>
 <button class="tool-btn" onclick="openTool('crop')">Open Tool</button>
 </div>
 
 <div class="tool-card">
-<h2>🪄 Background Remover</h2>
+<h2>🎨 Background Remover</h2>
 <p>Remove image background.</p>
-<button class="tool-btn" onclick="openTool('bg')">Open Tool</button>
+<button class="tool-btn" onclick="openTool('background')">Open Tool</button>
 </div>
 
-</div>
+</section>
 
 <!-- IMAGE RESIZER -->
 
-<div id="resizer" class="tool-box" style="display:none;">
+<div id="resizer" class="tool-box">
 
-<h2>🖼 Image Resizer</h2>
+<h2>Image Resizer</h2>
 
 <input type="file" id="resizeImage" accept="image/*">
 
@@ -67,7 +69,9 @@
 
 <button id="resizeBtn">Resize Image</button>
 
-<a id="downloadBtn" style="display:none;">Download Image</a>
+<br><br>
+
+<a id="downloadBtn" class="tool-btn" style="display:none;">Download Image</a>
 
 <canvas id="canvas" style="display:none;"></canvas>
 
@@ -75,35 +79,39 @@
 
 <!-- IMAGE COMPRESSOR -->
 
-<div id="compressor" class="tool-box" style="display:none;">
+<div id="compressor" class="tool-box">
 
-<h2>📦 Image Compressor</h2>
+<h2>Image Compressor</h2>
 
 <input type="file" id="compressImage" accept="image/*">
+
+<label>Quality</label>
 
 <input type="range" id="quality" min="10" max="100" value="70">
 
 <button id="compressBtn">Compress Image</button>
 
-<a id="downloadCompressed" style="display:none;">Download</a>
+<br><br>
+
+<a id="downloadCompressed" class="tool-btn" style="display:none;">Download Image</a>
 
 </div>
 
 <!-- CROP -->
 
-<div id="crop" class="tool-box" style="display:none;">
+<div id="crop" class="tool-box">
 
-<h2>✂ Crop Tool</h2>
+<h2>Crop Tool</h2>
 
 <p>Coming Soon...</p>
 
 </div>
 
-<!-- BG -->
+<!-- BACKGROUND -->
 
-<div id="bg" class="tool-box" style="display:none;">
+<div id="background" class="tool-box">
 
-<h2>🪄 Background Remover</h2>
+<h2>Background Remover</h2>
 
 <p>Coming Soon...</p>
 
