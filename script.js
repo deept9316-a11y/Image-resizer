@@ -1,106 +1,128 @@
-// =========================
+// ===============================
+// OPEN TOOL
+// ===============================
+
+function openTool(id){
+
+document.querySelectorAll(".tool-box").forEach(function(box){
+box.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+window.scrollTo({
+top:document.getElementById(id).offsetTop-20,
+behavior:"smooth"
+});
+
+}
+
+// ===============================
 // IMAGE RESIZER
-// =========================
+// ===============================
 
-const resizeImage = document.getElementById("resizeImage");
-const resizeBtn = document.getElementById("resizeBtn");
-const widthInput = document.getElementById("width");
-const heightInput = document.getElementById("height");
-const canvas = document.getElementById("canvas");
-const downloadBtn = document.getElementById("downloadBtn");
+const resizeBtn=document.getElementById("resizeBtn");
 
-if (resizeBtn) {
+if(resizeBtn){
 
-resizeBtn.addEventListener("click", function () {
+resizeBtn.addEventListener("click",function(){
 
-const file = resizeImage.files[0];
+const file=document.getElementById("resizeImage").files[0];
 
-if (!file) {
-alert("Please select an image.");
+if(!file){
+alert("Select Image");
 return;
 }
 
-const width = parseInt(widthInput.value);
-const height = parseInt(heightInput.value);
+const width=parseInt(document.getElementById("width").value);
 
-if (!width || !height) {
-alert("Please enter width and height.");
+const height=parseInt(document.getElementById("height").value);
+
+if(!width||!height){
+alert("Enter Width & Height");
 return;
 }
 
-const img = new Image();
+const img=new Image();
 
-img.onload = function () {
+img.onload=function(){
 
-canvas.width = width;
-canvas.height = height;
+const canvas=document.getElementById("canvas");
 
-const ctx = canvas.getContext("2d");
+canvas.width=width;
 
-ctx.drawImage(img, 0, 0, width, height);
+canvas.height=height;
 
-downloadBtn.href = canvas.toDataURL("image/png");
-downloadBtn.download = "resized-image.png";
-downloadBtn.style.display = "inline-block";
+const ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0,width,height);
+
+const download=document.getElementById("downloadBtn");
+
+download.href=canvas.toDataURL("image/png");
+
+download.download="resized-image.png";
+
+download.style.display="inline-block";
 
 };
 
-img.src = URL.createObjectURL(file);
+img.src=URL.createObjectURL(file);
 
 });
 
-// =========================
+}
+
+// ===============================
 // IMAGE COMPRESSOR
-// =========================
+// ===============================
 
-const compressImage = document.getElementById("compressImage");
-const compressBtn = document.getElementById("compressBtn");
-const quality = document.getElementById("quality");
-const downloadCompressed = document.getElementById("downloadCompressed");
+const compressBtn=document.getElementById("compressBtn");
 
-if (compressBtn) {
+if(compressBtn){
 
-compressBtn.addEventListener("click", function () {
+compressBtn.addEventListener("click",function(){
 
-const file = compressImage.files[0];
+const file=document.getElementById("compressImage").files[0];
 
-if (!file) {
-alert("Please select an image.");
+if(!file){
+alert("Select Image");
 return;
 }
 
-const img = new Image();
+const quality=document.getElementById("quality").value/100;
 
-img.onload = function () {
+const img=new Image();
 
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
+img.onload=function(){
 
-canvas.width = img.width;
-canvas.height = img.height;
+const canvas=document.createElement("canvas");
 
-ctx.drawImage(img, 0, 0);
+canvas.width=img.width;
 
-const q = quality.value / 100;
+canvas.height=img.height;
+
+const ctx=canvas.getContext("2d");
+
+ctx.drawImage(img,0,0);
 
 canvas.toBlob(function(blob){
 
-if(!blob){
-alert("Compression failed");
-return;
-}
+const download=document.getElementById("downloadCompressed");
 
-downloadCompressed.href = URL.createObjectURL(blob);
-downloadCompressed.download = "compressed-image.jpg";
-downloadCompressed.style.display = "inline-block";
-downloadCompressed.textContent = "Download Compressed Image";
+download.href=URL.createObjectURL(blob);
 
-},"image/jpeg",q);
+download.download="compressed-image.jpg";
+
+download.style.display="inline-block";
+
+},"image/jpeg",quality);
 
 };
 
-img.src = URL.createObjectURL(file);
+img.src=URL.createObjectURL(file);
 
 });
 
 }
+```
