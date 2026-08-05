@@ -12,3 +12,4 @@ input.addEventListener("change", function () {
   }
 });
 </script>https://github.com/deept9316-a11y/Image-resizer/edit/main/README.md
+.
