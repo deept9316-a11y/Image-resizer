@@ -6,80 +6,102 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#f5f7fb;
+background:#f4f7fb;
 color:#222;
 }
 
 .header{
-background:#0d6efd;
-padding:15px 30px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+padding:18px 40px;
+background:#0d6efd;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+color:#fff;
+}
+
+nav{
+display:flex;
+gap:20px;
 flex-wrap:wrap;
 }
 
-.header h1{
-color:#fff;
-}
-
-.header nav a{
+nav a{
 color:#fff;
 text-decoration:none;
-margin:0 10px;
 font-weight:bold;
+transition:.3s;
 }
 
-.header nav a:hover{
-text-decoration:underline;
+nav a:hover,
+nav .active{
+color:#ffd43b;
 }
 
 .hero{
+padding:60px 20px;
 text-align:center;
-padding:40px 20px;
-background:#fff;
+background:#ffffff;
 }
 
 .hero h1{
-font-size:36px;
+font-size:42px;
 margin-bottom:10px;
 }
 
 .hero p{
+font-size:18px;
 color:#666;
 }
 
 .tools-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
-padding:30px;
+gap:25px;
+padding:35px;
 }
 
 .tool-card{
 background:#fff;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+padding:25px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
 text-align:center;
 transition:.3s;
 }
 
 .tool-card:hover{
-transform:translateY(-5px);
+transform:translateY(-8px);
+}
+
+.tool-card h2{
+margin-bottom:10px;
+}
+
+.tool-card p{
+margin-bottom:20px;
+color:#666;
 }
 
 .tool-btn,
 button{
 background:#0d6efd;
 color:#fff;
+padding:12px 22px;
 border:none;
-padding:12px 20px;
 border-radius:8px;
 cursor:pointer;
-margin-top:15px;
+font-size:16px;
 text-decoration:none;
 display:inline-block;
+transition:.3s;
 }
 
 .tool-btn:hover,
@@ -88,12 +110,18 @@ background:#084298;
 }
 
 .tool-box{
-background:#fff;
+display:none;
 max-width:700px;
-margin:30px auto;
-padding:25px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
+margin:40px auto;
+background:#fff;
+padding:30px;
+border-radius:15px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.tool-box h2{
+margin-bottom:20px;
+text-align:center;
 }
 
 .tool-box input{
@@ -102,29 +130,55 @@ padding:12px;
 margin:12px 0;
 border:1px solid #ccc;
 border-radius:8px;
+font-size:16px;
 }
 
 .tool-box input[type=range]{
 padding:0;
 }
 
+.tool-box button{
+width:100%;
+margin-top:15px;
+}
+
 #downloadBtn,
 #downloadCompressed{
 margin-top:20px;
+width:100%;
+text-align:center;
+}
+
+footer{
+margin-top:50px;
+padding:20px;
+text-align:center;
+background:#0d6efd;
+color:#fff;
 }
 
 @media(max-width:768px){
 
 .header{
 flex-direction:column;
+gap:15px;
 }
 
-.header nav{
-margin-top:10px;
+nav{
+justify-content:center;
 }
 
 .hero h1{
-font-size:28px;
+font-size:30px;
+}
+
+.tools-grid{
+padding:20px;
+}
+
+.tool-box{
+margin:20px;
+padding:20px;
 }
 
 }
