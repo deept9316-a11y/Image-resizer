@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deept9316-a11y.github.io/Image-resizer/sitemap.xml
