@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor - ToolHub</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .dropzone {
+            border: 2px dashed #3b82f6;
+            background: #eff6ff;
+            padding: 35px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: none;
+        }
+        .controls label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .controls input[type="range"] {
+            width: 100%;
+        }
+        .preview-box {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .preview-box img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="../index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>📉 Image Compressor</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Compress image file size in KB/MB while maintaining visual quality.</p>
+
+            <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
+                <p>📷 Drag & Drop image here or <strong>Browse</strong></p>
+                <input type="file" id="imageInput" accept="image/jpeg, image/webp, image/png" style="display:none;">
+            </div>
+
+            <div class="controls" id="controls">
+                <label for="qualityRange">Compression Level (Quality: <span id="qualityVal">70%</span>):</label>
+                <input type="range" id="qualityRange" min="0.1" max="1.0" step="0.05" value="0.7">
+                <button class="btn btn-primary" id="compressBtn" style="margin-top: 15px;">Compress Image</button>
+            </div>
+
+            <div class="preview-box" id="previewContainer">
+                <p id="sizeComparison" style="font-size: 14px; color: #334155; margin-bottom: 10px; font-weight: 600;"></p>
+                <img id="previewImg" src="" alt="Compressed Preview">
+                <br>
+                <a id="downloadBtn" class="btn btn-success" download="compressed-image.jpg">Download Compressed Image</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const controls = document.getElementById('controls');
+        const qualityRange = document.getElementById('qualityRange');
+        const qualityVal = document.getElementById('qualityVal');
+        const compressBtn = document.getElementById('compressBtn');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImg = document.getElementById('previewImg');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const sizeComparison = document.getElementById('sizeComparison');
+
+        let originalFile = null;
+        let originalImage = new Image();
+
+        qualityRange.addEventListener('input', () => {
+            qualityVal.innerText = Math.round(qualityRange.value * 100) + '%';
+        });
+
+        imageInput.addEventListener('change', () => {
+            originalFile = imageInput.files[0];
+            if (!originalFile) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(originalFile);
+        });
+
+        originalImage.onload = () => {
+            controls.style.display = 'block';
+            previewContainer.style.display = 'none';
+        };
+
+        compressBtn.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = originalImage.width;
+            canvas.height = originalImage.height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(originalImage, 0, 0);
+
+            const quality = parseFloat(qualityRange.value);
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+
+            previewImg.src = compressedDataUrl;
+            downloadBtn.href = compressedDataUrl;
+
+            const origKB = (originalFile.size / 1024).toFixed(2);
+            const head = 'data:image/jpeg;base64,';
+            const newBytes = Math.round((compressedDataUrl.length - head.length) * 3 / 4);
+            const newKB = (newBytes / 1024).toFixed(2);
+
+            sizeComparison.innerText = `Original: ${origKB} KB ➔ Compressed: ${newKB} KB`;
+            previewContainer.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+
