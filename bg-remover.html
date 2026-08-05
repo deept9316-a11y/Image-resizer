@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Background Remover - ToolHub</title>
+    <title>AI Background Remover - ToolHub</title>
     <link rel="stylesheet" href="style.css">
+    <!-- imgly background removal bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js"></script>
     <style>
         .tool-container {
             max-width: 650px;
@@ -25,18 +27,6 @@
             cursor: pointer;
             margin-bottom: 20px;
         }
-        .controls {
-            margin: 15px 0;
-            text-align: left;
-        }
-        .controls label {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .controls input[type="range"] {
-            width: 100%;
-            margin-top: 5px;
-        }
         .preview-box {
             margin-top: 20px;
             text-align: center;
@@ -44,11 +34,29 @@
         }
         .preview-box img {
             max-width: 100%;
-            max-height: 300px;
-            border-radius: 6px;
+            max-height: 350px;
+            border-radius: 8px;
             margin-bottom: 15px;
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="8" height="8" fill="%23ccc"/><rect x="8" y="8" width="8" height="8" fill="%23ccc"/></svg>');
         }
+        .status-msg {
+            margin: 15px 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .loader {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #cbd5e1;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -63,24 +71,21 @@
 
     <main class="container">
         <div class="tool-container">
-            <h2>✂️ Background Remover</h2>
-            <p style="color: #64748b; margin-bottom: 20px;">Instantly make photo background transparent using smart color filter.</p>
+            <h2>✨ AI Background Remover</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Automatically isolate subjects and remove background with AI precision.</p>
 
             <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
                 <p>📷 Drag & Drop image here or <strong>Browse</strong></p>
                 <input type="file" id="imageInput" accept="image/*" style="display:none;">
             </div>
 
-            <div id="controls" class="controls" style="display:none;">
-                <label for="threshold">Tolerance / Sensitivity: <span id="threshVal">30</span></label>
-                <input type="range" id="threshold" min="5" max="100" value="30">
-            </div>
+            <div id="statusMsg" class="status-msg" style="display:none;"></div>
 
             <div class="preview-box" id="previewContainer">
-                <h3>Transparent PNG Result</h3>
-                <img id="previewImg" src="" alt="Transparent Preview">
+                <h3>Transparent Subject Preview</h3>
+                <img id="previewImg" src="" alt="AI Transparent Preview">
                 <br>
-                <a id="downloadBtn" class="btn btn-success" download="transparent-image.png">Download Transparent PNG</a>
+                <a id="downloadBtn" class="btn btn-success" download="ai-cutout.png">Download Transparent PNG</a>
             </div>
         </div>
     </main>
@@ -90,70 +95,43 @@
         const previewContainer = document.getElementById('previewContainer');
         const previewImg = document.getElementById('previewImg');
         const downloadBtn = document.getElementById('downloadBtn');
-        const controls = document.getElementById('controls');
-        const thresholdInput = document.getElementById('threshold');
-        const threshVal = document.getElementById('threshVal');
+        const statusMsg = document.getElementById('statusMsg');
 
-        let originalImg = new Image();
-
-        imageInput.addEventListener('change', () => {
+        imageInput.addEventListener('change', async () => {
             const file = imageInput.files[0];
             if (!file) return;
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                originalImg.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
+            // Show processing status
+            statusMsg.style.display = 'block';
+            statusMsg.style.color = '#2563eb';
+            statusMsg.innerHTML = '<span class="loader"></span> AI processing... Removing background (takes 3-6 seconds)...';
+            previewContainer.style.display = 'none';
 
-        originalImg.onload = () => {
-            controls.style.display = 'block';
-            processImage();
-        };
+            try {
+                // Execute AI-based background removal directly in browser
+                const blob = await imglyRemoveBackground(file, {
+                    progress: (key, current, total) => {
+                        if (total > 0) {
+                            const pct = Math.round((current / total) * 100);
+                            statusMsg.innerHTML = `<span class="loader"></span> Processing model (${pct}%)...`;
+                        }
+                    }
+                });
 
-        thresholdInput.addEventListener('input', () => {
-            threshVal.innerText = thresholdInput.value;
-            processImage();
-        });
+                const resultUrl = URL.createObjectURL(blob);
+                previewImg.src = resultUrl;
+                downloadBtn.href = resultUrl;
 
-        function processImage() {
-            const canvas = document.createElement('canvas');
-            canvas.width = originalImg.width;
-            canvas.height = originalImg.height;
+                statusMsg.style.color = '#16a34a';
+                statusMsg.innerHTML = '✅ Background removed perfectly!';
+                previewContainer.style.display = 'block';
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(originalImg, 0, 0);
-
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imgData.data;
-
-            // Sample corner pixel as background reference color
-            const bgR = data[0];
-            const bgG = data[1];
-            const bgB = data[2];
-
-            const tolerance = parseInt(thresholdInput.value);
-
-            for (let i = 0; i < data.length; i += 4) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-
-                // Check color distance from corner background color
-                const diff = Math.sqrt((r - bgR) ** 2 + (g - bgG) ** 2 + (b - bgB) ** 2);
-
-                if (diff < tolerance) {
-                    data[i + 3] = 0; // Set Alpha to 0 (Transparent)
-                }
+            } catch (err) {
+                console.error(err);
+                statusMsg.style.color = '#dc2626';
+                statusMsg.innerHTML = '⚠️ AI processing failed. Please try a different photo format (JPG/PNG).';
             }
-
-            ctx.putImageData(imgData, 0, 0);
-            const resultUrl = canvas.toDataURL('image/png');
-            previewImg.src = resultUrl;
-            downloadBtn.href = resultUrl;
-            previewContainer.style.display = 'block';
-        }
+        });
     </script>
 </body>
 </html>
