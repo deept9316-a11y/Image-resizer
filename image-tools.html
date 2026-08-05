@@ -1,130 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Tools - ToolHub</title>
-    <link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pica/9.0.1/pica.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Tools - ToolHub</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header>
-    <div class="logo">
-        <h2>ToolHub</h2>
-    </div>
-
+<header class="header">
+    <h1>🛠 ToolHub</h1>
     <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="image-tools.html">Image Tools</a></li>
-            <li><a href="pdf-tools.html">PDF Tools</a></li>
-            <li><a href="photo-editor.html">Photo Editor</a></li>
-            <li><a href="ai-tools.html">AI Tools</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <a href="index.html">Home</a>
+        <a href="image-tools.html" class="active">Image Tools</a>
+        <a href="pdf-tools.html">PDF Tools</a>
+        <a href="photo-editor.html">Photo Editor</a>
+        <a href="ai-tools.html">AI Tools</a>
     </nav>
 </header>
 
 <section class="hero">
     <h1>Image Tools</h1>
-    <p>Resize, Compress, Crop, Convert and Edit Images Easily.</p>
+    <p>Select any tool below.</p>
 </section>
 
-<section class="tools">
+<div class="tools-grid">
 
-    <div class="tool-card">
-        <h2>🖼️ Image Resizer</h2>
-        <p>Resize your images without losing quality.</p>
-        <a href="#" class="tool-btn">Open Tool</a>
-    </div>
+<div class="tool-card">
+<h2>🖼 Image Resizer</h2>
+<p>Resize any image.</p>
+<button class="tool-btn" onclick="openTool('resizer')">Open Tool</button>
+</div>
 
-    <div class="tool-card">
-        <h2>📦 Image Compressor</h2>
-        <p>Reduce image size while keeping good quality.</p>
-        <a href="#" class="tool-btn">Open Tool</a>
-    </div>
+<div class="tool-card">
+<h2>📦 Image Compressor</h2>
+<p>Compress image size.</p>
+<button class="tool-btn" onclick="openTool('compressor')">Open Tool</button>
+</div>
 
-    <div class="tool-card">
-        <h2>✂️ Image Crop</h2>
-        <p>Crop images to any size or ratio.</p>
-        <a href="#" class="tool-btn">Open Tool</a>
-    </div>
+<div class="tool-card">
+<h2>✂ Crop Image</h2>
+<p>Crop images easily.</p>
+<button class="tool-btn" onclick="openTool('crop')">Open Tool</button>
+</div>
 
-    <div class="tool-card">
-        <h2>🔄 Image Converter</h2>
-        <p>Convert JPG, PNG and WebP images.</p>
-        <a href="#" class="tool-btn">Open Tool</a>
-    </div>
+<div class="tool-card">
+<h2>🪄 Background Remover</h2>
+<p>Remove image background.</p>
+<button class="tool-btn" onclick="openTool('bg')">Open Tool</button>
+</div>
 
-</section>
-<!-- Image Resizer Tool -->
+</div>
 
-<section class="tool-card">
+<!-- IMAGE RESIZER -->
 
-    <h2>🖼️ Image Resizer</h2>
+<div id="resizer" class="tool-box" style="display:none;">
 
-    <p>Select an image and choose a new width & height.</p>
+<h2>🖼 Image Resizer</h2>
 
-    <input type="file" id="resizeImage" accept="image/*">
+<input type="file" id="resizeImage" accept="image/*">
 
-    <br><br>
+<input type="number" id="width" placeholder="Width">
 
-    <input type="number" id="width" placeholder="Width (px)">
+<input type="number" id="height" placeholder="Height">
 
-    <input type="number" id="height" placeholder="Height (px)">
+<button id="resizeBtn">Resize Image</button>
 
-    <br><br>
+<a id="downloadBtn" style="display:none;">Download Image</a>
 
-    <button id="resizeBtn" class="tool-btn">
-        Resize Image
-    </button>
+<canvas id="canvas" style="display:none;"></canvas>
 
-    <br><br>
+</div>
 
-    <canvas id="canvas" style="display:none;"></canvas>
+<!-- IMAGE COMPRESSOR -->
 
-    <a id="downloadBtn"
-       class="tool-btn"
-       style="display:none;">
-       Download Image
-    </a>
+<div id="compressor" class="tool-box" style="display:none;">
 
-</section>
+<h2>📦 Image Compressor</h2>
+
+<input type="file" id="compressImage" accept="image/*">
+
+<input type="range" id="quality" min="10" max="100" value="70">
+
+<button id="compressBtn">Compress Image</button>
+
+<a id="downloadCompressed" style="display:none;">Download</a>
+
+</div>
+
+<!-- CROP -->
+
+<div id="crop" class="tool-box" style="display:none;">
+
+<h2>✂ Crop Tool</h2>
+
+<p>Coming Soon...</p>
+
+</div>
+
+<!-- BG -->
+
+<div id="bg" class="tool-box" style="display:none;">
+
+<h2>🪄 Background Remover</h2>
+
+<p>Coming Soon...</p>
+
+</div>
+
 <script src="script.js"></script>
 
 </body>
 </html>
-<section class="tool-card">
-
-<h2>📦 Image Compressor</h2>
-
-<p>Select an image and choose compression quality.</p>
-
-<input type="file" id="compressImage" accept="image/*">
-
-<br><br>
-
-<label>Quality:</label>
-
-<input type="range" id="quality" min="10" max="100" value="70">
-
-<span id="qualityValue">70%</span>
-
-<br><br>
-
-<button id="compressBtn" class="tool-btn">
-Compress Image
-</button>
-
-<br><br>
-
-<a id="downloadCompressed"
-class="tool-btn"
-style="display:none;">
-Download Compressed Image
-</a>
-
-</section>
