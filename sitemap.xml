@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- Individual Tools -->
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/image-resizer.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/bg-remover.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/crop-image.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/image-compressor.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/jpg-to-png.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/png-to-jpg.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/webp-to-jpg.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/jpg-to-pdf.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://deept9316-a11y.github.io/Image-resizer/qr-generator.html</loc>
+    <lastmod>2026-08-05</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+</urlset>
+
