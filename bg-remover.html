@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -104,16 +103,19 @@
             // Show processing status
             statusMsg.style.display = 'block';
             statusMsg.style.color = '#2563eb';
-            statusMsg.innerHTML = '<span class="loader"></span> AI processing... Removing background (takes 3-6 seconds)...';
+            statusMsg.innerHTML = '<span class="loader"></span> Loading AI Model (First time takes a few seconds)...';
             previewContainer.style.display = 'none';
 
             try {
-                // Execute AI-based background removal directly in browser
-                const blob = await imglyRemoveBackground(file, {
+                // Correct CDN function and public asset fetching config
+                const removeFn = window.imgly ? window.imgly.removeBackground : (window.removeBackground || imglyRemoveBackground);
+                
+                const blob = await removeFn(file, {
+                    publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal-data@1.4.5/dist/",
                     progress: (key, current, total) => {
                         if (total > 0) {
                             const pct = Math.round((current / total) * 100);
-                            statusMsg.innerHTML = `<span class="loader"></span> Processing model (${pct}%)...`;
+                            statusMsg.innerHTML = `<span class="loader"></span> AI processing (${pct}%)...`;
                         }
                     }
                 });
@@ -129,7 +131,7 @@
             } catch (err) {
                 console.error(err);
                 statusMsg.style.color = '#dc2626';
-                statusMsg.innerHTML = '⚠️ AI processing failed. Please try a different photo format (JPG/PNG).';
+                statusMsg.innerHTML = '⚠️ AI processing failed. Please check internet and try again.';
             }
         });
     </script>
