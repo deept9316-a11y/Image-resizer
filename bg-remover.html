@@ -1,13 +1,12 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Background Remover - ToolHub</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- imgly background removal bundle JS -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3001527769458683"
-     crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/dist/index.js"></script>
+    <title>Background Remover - ToolHub</title>
+    <link rel="stylesheet" href="../style.css">
+    <!-- Imgly Background Removal Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.3.0/dist/index.js"></script>
     <style>
         .tool-container {
             max-width: 650px;
@@ -17,47 +16,54 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            text-align: center;
         }
-        .dropzone {
-            border: 2px dashed #3b82f6;
-            background: #eff6ff;
-            padding: 35px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
+        .form-group {
             margin-bottom: 20px;
         }
-        .preview-box {
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+        .preview-container {
             margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .img-box {
             text-align: center;
-            display: none;
+            max-width: 250px;
         }
-        .preview-box img {
-            max-width: 100%;
-            max-height: 350px;
+        .img-box img {
+            width: 100%;
             border-radius: 8px;
-            margin-bottom: 15px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><rect width="8" height="8" fill="%23ccc"/><rect x="8" y="8" width="8" height="8" fill="%23ccc"/></svg>');
+            border: 1px solid #cbd5e1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><rect width="8" height="8" fill="%23eee"/><rect x="8" width="8" height="8" fill="%23fff"/><rect y="8" width="8" height="8" fill="%23fff"/><rect x="8" y="8" width="8" height="8" fill="%23eee"/></svg>');
         }
-        .status-msg {
-            margin: 15px 0;
-            font-size: 15px;
+        #statusText {
+            margin-top: 15px;
             font-weight: 600;
             color: #2563eb;
+            display: none;
         }
-        .loader {
+        .btn-success {
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid #cbd5e1;
-            border-top-color: #2563eb;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #16a34a;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -65,75 +71,84 @@
     <header class="navbar">
         <div class="logo">🛠️ ToolHub</div>
         <nav>
-            <a href="index.html">Home</a>
-            <a href="index.html#tools-section">All Tools</a>
+            <a href="../index.html">Home</a>
+            <a href="../index.html#tools-section">All Tools</a>
         </nav>
     </header>
 
     <main class="container">
         <div class="tool-container">
-            <h2>✨ AI Background Remover</h2>
-            <p style="color: #64748b; margin-bottom: 20px;">Automatically isolate subjects and remove background with AI precision.</p>
+            <h2>✂️ Background Remover</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Upload an image to automatically remove its background in seconds.</p>
 
-            <div class="dropzone" id="dropzone" onclick="document.getElementById('imageInput').click()">
-                <p>📷 Drag & Drop image here or <strong>Browse</strong></p>
-                <input type="file" id="imageInput" accept="image/*" style="display:none;">
+            <div class="form-group">
+                <label for="imageInput">Select Image:</label>
+                <input type="file" id="imageInput" accept="image/*">
             </div>
 
-            <div id="statusMsg" class="status-msg" style="display:none;"></div>
+            <button class="btn btn-primary" id="removeBtn" disabled>Remove Background</button>
 
-            <div class="preview-box" id="previewContainer">
-                <h3>Transparent Subject Preview</h3>
-                <img id="previewImg" src="" alt="AI Transparent Preview">
-                <br>
-                <a id="downloadBtn" class="btn btn-success" download="ai-cutout.png">Download Transparent PNG</a>
+            <p id="statusText">Processing... Please wait a few seconds ⏳</p>
+
+            <div class="preview-container">
+                <div class="img-box" id="originalBox" style="display: none;">
+                    <h4>Original</h4>
+                    <img id="originalImg" src="" alt="Original Image">
+                </div>
+                <div class="img-box" id="resultBox" style="display: none;">
+                    <h4>Result</h4>
+                    <img id="resultImg" src="" alt="Background Removed">
+                    <a id="downloadBtn" class="btn-success" download="bg-removed.png">Download Image</a>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
         const imageInput = document.getElementById('imageInput');
-        const previewContainer = document.getElementById('previewContainer');
-        const previewImg = document.getElementById('previewImg');
+        const removeBtn = document.getElementById('removeBtn');
+        const statusText = document.getElementById('statusText');
+        const originalBox = document.getElementById('originalBox');
+        const resultBox = document.getElementById('resultBox');
+        const originalImg = document.getElementById('originalImg');
+        const resultImg = document.getElementById('resultImg');
         const downloadBtn = document.getElementById('downloadBtn');
-        const statusMsg = document.getElementById('statusMsg');
 
-        imageInput.addEventListener('change', async () => {
-            const file = imageInput.files[0];
-            if (!file) return;
+        let selectedFile = null;
 
-            // Show processing status
-            statusMsg.style.display = 'block';
-            statusMsg.style.color = '#2563eb';
-            statusMsg.innerHTML = '<span class="loader"></span> Loading AI Model (First time takes a few seconds)...';
-            previewContainer.style.display = 'none';
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                originalImg.src = URL.createObjectURL(file);
+                originalBox.style.display = 'block';
+                resultBox.style.display = 'none';
+                removeBtn.disabled = false;
+            }
+        });
+
+        removeBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            removeBtn.disabled = true;
+            statusText.style.display = 'block';
 
             try {
-                // Correct CDN function and public asset fetching config
-                const removeFn = window.imgly ? window.imgly.removeBackground : (window.removeBackground || imglyRemoveBackground);
+                // AI द्वारा फोटो से बैकग्राउंड हटाना
+                const blob = await imglyRemoveBackground(selectedFile);
+                const url = URL.createObjectURL(blob);
                 
-                const blob = await removeFn(file, {
-                    publicPath: "https://cdn.jsdelivr.net/npm/@imgly/background-removal-data@1.4.5/dist/",
-                    progress: (key, current, total) => {
-                        if (total > 0) {
-                            const pct = Math.round((current / total) * 100);
-                            statusMsg.innerHTML = `<span class="loader"></span> AI processing (${pct}%)...`;
-                        }
-                    }
-                });
-
-                const resultUrl = URL.createObjectURL(blob);
-                previewImg.src = resultUrl;
-                downloadBtn.href = resultUrl;
-
-                statusMsg.style.color = '#16a34a';
-                statusMsg.innerHTML = '✅ Background removed perfectly!';
-                previewContainer.style.display = 'block';
-
-            } catch (err) {
-                console.error(err);
-                statusMsg.style.color = '#dc2626';
-                statusMsg.innerHTML = '⚠️ AI processing failed. Please check internet and try again.';
+                resultImg.src = url;
+                downloadBtn.href = url;
+                
+                resultBox.style.display = 'block';
+                statusText.style.display = 'none';
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred while removing background. Please try another image.');
+                statusText.style.display = 'none';
+            } finally {
+                removeBtn.disabled = false;
             }
         });
     </script>
