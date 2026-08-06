@@ -76,9 +76,9 @@
         const generateBtn = document.getElementById('generateBtn');
         const previewContainer = document.getElementById('previewContainer');
         const qrImg = document.getElementById('qrImg');
-        const downloadBtn = downloadBtn = document.getElementById('downloadBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-        generateBtn.addEventListener('click', () => {
+        generateBtn.addEventListener('click', async () => {
             const val = qrText.value.trim();
             if (!val) {
                 alert('Please enter text or a URL.');
@@ -87,10 +87,18 @@
 
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(val)}`;
             qrImg.src = qrUrl;
-            downloadBtn.href = qrUrl;
+
+            // इमेज को Blob बनाकर डाउनलोड के लिए सेट करना ताकि तुरंत डाउनलोड हो सके
+            try {
+                const response = await fetch(qrUrl);
+                const blob = await response.blob();
+                downloadBtn.href = URL.createObjectURL(blob);
+            } catch (err) {
+                downloadBtn.href = qrUrl;
+            }
+
             previewContainer.style.display = 'block';
         });
     </script>
 </body>
 </html>
-
