@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator - ToolHub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tool-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #334155;
+        }
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="date"]:focus {
+            border-color: #2563eb;
+        }
+        .btn-primary {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            display: none;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .stat-card {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .stat-num {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        .stat-lbl {
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>🎂 Age Calculator</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Calculate your exact age in years, months, and days.</p>
+
+            <div class="input-group">
+                <label for="dob">Select Date of Birth:</label>
+                <input type="date" id="dob">
+            </div>
+
+            <button class="btn-primary" id="calcBtn">Calculate Age</button>
+
+            <div class="result-box" id="resultBox">
+                <div class="result-title" id="ageSummary"></div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-num" id="yearsNum">0</div>
+                        <div class="stat-lbl">Years</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num" id="monthsNum">0</div>
+                        <div class="stat-lbl">Months</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-num" id="daysNum">0</div>
+                        <div class="stat-lbl">Days</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const dobInput = document.getElementById('dob');
+        const calcBtn = document.getElementById('calcBtn');
+        const resultBox = document.getElementById('resultBox');
+        const yearsNum = document.getElementById('yearsNum');
+        const monthsNum = document.getElementById('monthsNum');
+        const daysNum = document.getElementById('daysNum');
+        const ageSummary = document.getElementById('ageSummary');
+
+        calcBtn.addEventListener('click', () => {
+            const dobVal = dobInput.value;
+            if(!dobVal) {
+                alert('Please select a valid date of birth!');
+                return;
+            }
+
+            const birthDate = new Date(dobVal);
+            const today = new Date();
+
+            if (birthDate > today) {
+                alert('Date of birth cannot be in the future!');
+                return;
+            }
+
+            let years = today.getFullYear() - birthDate.getFullYear();
+            let months = today.getMonth() - birthDate.getMonth();
+            let days = today.getDate() - birthDate.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            yearsNum.textContent = years;
+            monthsNum.textContent = months;
+            daysNum.textContent = days;
+            ageSummary.textContent = `You are ${years} years, ${months} months, and ${days} days old.`;
+
+            resultBox.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+
