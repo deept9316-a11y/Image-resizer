@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Case Converter - ToolHub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tool-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea:focus {
+            border-color: #2563eb;
+        }
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-action {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-action:hover {
+            background: #1d4ed8;
+        }
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>🔤 Text Case Converter</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Convert your text into Uppercase, Lowercase, Title Case, and Sentence Case easily.</p>
+
+            <textarea id="textInput" placeholder="Type or paste your text here..."></textarea>
+
+            <div class="btn-grid">
+                <button class="btn-action" onclick="toUpper()">UPPERCASE</button>
+                <button class="btn-action" onclick="toLower()">lowercase</button>
+                <button class="btn-action" onclick="toTitle()">Title Case</button>
+                <button class="btn-action" onclick="toSentence()">Sentence case</button>
+                <button class="btn-secondary" onclick="copyText()">Copy Text</button>
+                <button class="btn-secondary" onclick="clearText()">Clear</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+
+        function toUpper() {
+            textInput.value = textInput.value.toUpperCase();
+        }
+
+        function toLower() {
+            textInput.value = textInput.value.toLowerCase();
+        }
+
+        function toTitle() {
+            textInput.value = textInput.value.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+        }
+
+        function toSentence() {
+            let text = textInput.value.toLowerCase();
+            textInput.value = text.replace(/(^\s*|[.!?]\s*)([a-z])/g, (match, separator, char) => separator + char.toUpperCase());
+        }
+
+        function copyText() {
+            if (!textInput.value) return;
+            navigator.clipboard.writeText(textInput.value);
+            alert('Text copied to clipboard!');
+        }
+
+        function clearText() {
+            textInput.value = '';
+        }
+    </script>
+</body>
+</html>
+
