@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus & Background Noise Generator - ToolHub</title>
+    <title>Focus & Ambient Noise Generator - ToolHub</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .tool-container {
-            max-width: 700px;
+            max-width: 750px;
             margin: 40px auto;
             background: #ffffff;
             padding: 30px;
@@ -15,34 +15,39 @@
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+        .sounds-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
         .sound-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #f8fafc;
-            padding: 16px 20px;
+            padding: 14px 18px;
             border-radius: 10px;
-            margin-bottom: 15px;
             border: 1px solid #e2e8f0;
         }
         .sound-info {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 18px;
+            gap: 10px;
+            font-size: 16px;
             font-weight: 600;
             color: #1e293b;
         }
         .controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
         .btn-toggle {
             background: #2563eb;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
@@ -51,7 +56,7 @@
             background: #dc2626;
         }
         input[type="range"] {
-            width: 100px;
+            width: 80px;
         }
     </style>
 </head>
@@ -67,33 +72,62 @@
 
     <main class="container">
         <div class="tool-container">
-            <h2>🎧 Focus & Background Sound Generator</h2>
-            <p style="color: #64748b; margin-bottom: 25px;">Relax, study, or focus with ambient white noise and natural relaxing sounds.</p>
+            <h2>🎧 Focus & Ambient Sound Generator</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Mix and play relaxing ambient sounds for study, work, or sleep.</p>
 
-            <!-- White Noise -->
-            <div class="sound-card">
-                <div class="sound-info"><span>📻</span> White Noise</div>
-                <div class="controls">
-                    <input type="range" id="vol-white" min="0" max="1" step="0.01" value="0.5">
-                    <button class="btn-toggle" onclick="toggleSound('white', this)">Play</button>
+            <div class="sounds-grid">
+                <!-- White Noise -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>📻</span> White Noise</div>
+                    <div class="controls">
+                        <input type="range" id="vol-white" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('white', this)">Play</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Pink Noise (Soft Rain feel) -->
-            <div class="sound-card">
-                <div class="sound-info"><span>🌧️</span> Rain & Ocean Feel (Pink Noise)</div>
-                <div class="controls">
-                    <input type="range" id="vol-pink" min="0" max="1" step="0.01" value="0.5">
-                    <button class="btn-toggle" onclick="toggleSound('pink', this)">Play</button>
+                <!-- Rain (Pink Noise) -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>🌧️</span> Heavy Rain</div>
+                    <div class="controls">
+                        <input type="range" id="vol-pink" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('pink', this)">Play</button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Brown Noise (Deep Relaxation) -->
-            <div class="sound-card">
-                <div class="sound-info"><span>🌊</span> Deep Water / Wind (Brown Noise)</div>
-                <div class="controls">
-                    <input type="range" id="vol-brown" min="0" max="1" step="0.01" value="0.5">
-                    <button class="btn-toggle" onclick="toggleSound('brown', this)">Play</button>
+                <!-- Deep Ocean (Brown Noise) -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>🌊</span> Deep Waves</div>
+                    <div class="controls">
+                        <input type="range" id="vol-brown" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('brown', this)">Play</button>
+                    </div>
+                </div>
+
+                <!-- Wind Sound -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>💨</span> Strong Wind</div>
+                    <div class="controls">
+                        <input type="range" id="vol-wind" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('wind', this)">Play</button>
+                    </div>
+                </div>
+
+                <!-- Clock Ticking -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>⏱️</span> Clock Ticking</div>
+                    <div class="controls">
+                        <input type="range" id="vol-clock" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('clock', this)">Play</button>
+                    </div>
+                </div>
+
+                <!-- Fireplace Crake -->
+                <div class="sound-card">
+                    <div class="sound-info"><span>🔥</span> Cozy Fireplace</div>
+                    <div class="controls">
+                        <input type="range" id="vol-fire" min="0" max="1" step="0.01" value="0.5">
+                        <button class="btn-toggle" onclick="toggleSound('fire', this)">Play</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,11 +149,9 @@
             const output = buffer.getChannelData(0);
 
             if (type === 'white') {
-                for (let i = 0; i < bufferSize; i++) {
-                    output[i] = Math.random() * 2 - 1;
-                }
+                for (let i = 0; i < bufferSize; i++) output[i] = Math.random() * 2 - 1;
             } else if (type === 'pink') {
-                let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+                let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
                 for (let i = 0; i < bufferSize; i++) {
                     let white = Math.random() * 2 - 1;
                     b0 = 0.99886 * b0 + white * 0.0555179;
@@ -128,8 +160,7 @@
                     b3 = 0.86650 * b3 + white * 0.3104856;
                     b4 = 0.55000 * b4 + white * 0.5329522;
                     b5 = -0.7616 * b5 - white * 0.0168980;
-                    output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-                    output[i] *= 0.11;
+                    output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
                     b6 = white * 0.115926;
                 }
             } else if (type === 'brown') {
@@ -140,12 +171,32 @@
                     lastOut = output[i];
                     output[i] *= 3.5;
                 }
+            } else if (type === 'wind') {
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    let white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.005 * white)) / 1.005;
+                    lastOut = output[i];
+                    output[i] *= 2.5;
+                }
+            } else if (type === 'fire') {
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = (Math.random() < 0.002) ? (Math.random() * 2 - 1) : (Math.random() * 0.05 - 0.025);
+                }
+            } else if (type === 'clock') {
+                for (let i = 0; i < bufferSize; i++) {
+                    if (i % (audioCtx.sampleRate / 2) < 100) {
+                        output[i] = Math.sin(i * 0.1);
+                    } else {
+                        output[i] = 0;
+                    }
+                }
             }
 
-            const whiteNoise = audioCtx.createBufferSource();
-            whiteNoise.buffer = buffer;
-            whiteNoise.loop = true;
-            return whiteNoise;
+            const noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = buffer;
+            noiseSource.loop = true;
+            return noiseSource;
         }
 
         function toggleSound(type, btn) {
@@ -181,4 +232,3 @@
     </script>
 </body>
 </html>
-
