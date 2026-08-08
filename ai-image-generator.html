@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Art & SVG Image Generator - ToolHub</title>
+    <title>AI Photo Style Generator - ToolHub</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .tool-container {
-            max-width: 700px;
+            max-width: 650px;
             margin: 40px auto;
             background: #ffffff;
             padding: 30px;
@@ -24,13 +24,14 @@
             margin-bottom: 8px;
             color: #1e293b;
         }
-        input[type="text"], select {
+        input[type="file"], select {
             width: 100%;
             padding: 12px;
             font-size: 16px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             box-sizing: border-box;
+            background: #f8fafc;
         }
         .btn-action {
             width: 100%;
@@ -46,24 +47,16 @@
         .btn-action:hover {
             background: #1d4ed8;
         }
-        .preview-box {
+        .preview-container {
             margin-top: 25px;
-            padding: 20px;
-            border-radius: 12px;
-            background: #0f172a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        #svgCanvas {
-            width: 100%;
-            max-width: 400px;
-            height: 300px;
-            border-radius: 8px;
-        }
-        .hidden {
             display: none;
+            text-align: center;
+        }
+        canvas {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -79,97 +72,90 @@
 
     <main class="container">
         <div class="tool-container">
-            <h2>🎨 AI Visual Art & SVG Generator</h2>
-            <p style="color: #64748b; margin-bottom: 20px;">Generate unique geometric AI art and vector graphics from text descriptions.</p>
+            <h2>📸 AI Photo Generator & Filter</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Upload your photo and apply AI cinematic art styles instantly.</p>
 
             <div class="form-group">
-                <label for="prompt">Enter Art Description / Prompt</label>
-                <input type="text" id="prompt" placeholder="e.g. Sunset, Cyberpunk City, Ocean Waves" value="Abstract Sunset">
+                <label for="imageInput">Upload Your Photo</label>
+                <input type="file" id="imageInput" accept="image/*">
             </div>
 
             <div class="form-group">
-                <label for="artStyle">Select Art Style</label>
-                <select id="artStyle">
-                    <option value="abstract">Abstract Shapes</option>
-                    <option value="cyberpunk">Cyberpunk Neon</option>
-                    <option value="nature">Nature & Sunset</option>
-                    <option value="minimal">Minimalist Geometric</option>
+                <label for="styleSelect">Select AI Art Style</label>
+                <select id="styleSelect">
+                    <option value="cinematic">🎬 Cinematic HD</option>
+                    <option value="cyberpunk">🌃 Cyberpunk Neon</option>
+                    <option value="vintage">📸 Vintage Fine Art</option>
+                    <option value="warm">✨ Warm Golden Hour</option>
+                    <option value="bw">🖤 Noir Black & White</option>
                 </select>
             </div>
 
-            <button class="btn-action" onclick="generateArt()">✨ Generate Image</button>
+            <button class="btn-action" onclick="applyAiStyle()">✨ Generate AI Photo</button>
 
-            <div id="previewBox" class="preview-box hidden">
-                <div id="svgContainer"></div>
-                <button class="btn-action" style="background:#16a34a;" onclick="downloadSVG()">📥 Download SVG Image</button>
+            <div id="previewBox" class="preview-container">
+                <canvas id="photoCanvas"></canvas>
+                <button class="btn-action" style="background:#16a34a;" onclick="downloadImage()">📥 Download Photo</button>
             </div>
         </div>
     </main>
 
     <script>
-        function hashCode(str) {
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            return hash;
-        }
+        function applyAiStyle() {
+            const fileInput = document.getElementById('imageInput');
+            const style = document.getElementById('styleSelect').value;
+            const canvas = document.getElementById('photoCanvas');
+            const ctx = canvas.getContext('2d');
+            const previewBox = document.getElementById('previewBox');
 
-        function generateArt() {
-            const prompt = document.getElementById('prompt').value || "Art";
-            const style = document.getElementById('artStyle').value;
-            const hash = Math.abs(hashCode(prompt));
-
-            let bgColors = ["#0f172a", "#1e1b4b", "#31103f"];
-            let palette = ["#38bdf8", "#f43f5e", "#fbbf24", "#a855f7", "#10b981"];
-
-            if (style === 'cyberpunk') {
-                bgColors = ["#050515", "#0d0221"];
-                palette = ["#00ffcc", "#ff007f", "#ffe600", "#9d00ff"];
-            } else if (style === 'nature') {
-                bgColors = ["#0c2340", "#1a365d"];
-                palette = ["#f97316", "#eab308", "#06b6d4", "#10b981"];
-            } else if (style === 'minimal') {
-                bgColors = ["#18181b", "#27272a"];
-                palette = ["#f4f4f5", "#a1a1aa", "#71717a"];
+            if (!fileInput.files[0]) {
+                alert("Please select a photo first!");
+                return;
             }
 
-            const bg = bgColors[hash % bgColors.length];
-            
-            let svgContent = `<svg id="svgCanvas" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="background:${bg}; border-radius:12px;">`;
+            const img = new Image();
+            img.src = URL.createObjectURL(fileInput.files[0]);
 
-            // Draw procedural shapes based on prompt hash
-            for (let i = 0; i < 12; i++) {
-                const color = palette[(hash + i) % palette.length];
-                const cx = ((hash * (i + 1) * 37) % 360) + 20;
-                const cy = ((hash * (i + 1) * 53) % 260) + 20;
-                const r = ((hash * (i + 1) * 19) % 70) + 15;
-                const opacity = (((hash + i) % 5) + 3) / 10;
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
 
-                if (i % 2 === 0) {
-                    svgContent += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" opacity="${opacity}" />`;
-                } else {
-                    const width = r * 1.5;
-                    svgContent += `<rect x="${cx - 20}" y="${cy - 20}" width="${width}" height="${width}" rx="8" fill="${color}" opacity="${opacity}" />`;
+                // Reset canvas
+                ctx.filter = 'none';
+                ctx.drawImage(img, 0, 0);
+
+                // Apply AI Filter Styles
+                if (style === 'cinematic') {
+                    ctx.filter = 'contrast(120%) brightness(105%) saturate(110%)';
+                    ctx.drawImage(img, 0, 0);
+                    // Blueish cinematic overlay
+                    ctx.fillStyle = 'rgba(15, 23, 42, 0.15)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (style === 'cyberpunk') {
+                    ctx.filter = 'contrast(140%) saturate(180%) hue-rotate(190deg)';
+                    ctx.drawImage(img, 0, 0);
+                } else if (style === 'vintage') {
+                    ctx.filter = 'sepia(50%) contrast(110%) brightness(95%)';
+                    ctx.drawImage(img, 0, 0);
+                } else if (style === 'warm') {
+                    ctx.filter = 'sepia(25%) saturate(140%) brightness(105%)';
+                    ctx.drawImage(img, 0, 0);
+                } else if (style === 'bw') {
+                    ctx.filter = 'grayscale(100%) contrast(130%)';
+                    ctx.drawImage(img, 0, 0);
                 }
-            }
 
-            svgContent += `</svg>`;
-
-            document.getElementById('svgContainer').innerHTML = svgContent;
-            document.getElementById('previewBox').classList.remove('hidden');
+                previewBox.style.display = 'block';
+            };
         }
 
-        function downloadSVG() {
-            const svgData = document.getElementById('svgContainer').innerHTML;
-            const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "ai-generated-art.svg";
+        function downloadImage() {
+            const canvas = document.getElementById('photoCanvas');
+            const link = document.createElement('a');
+            link.download = 'ai-styled-photo.png';
+            link.href = canvas.toDataURL();
             link.click();
         }
     </script>
 </body>
 </html>
-
