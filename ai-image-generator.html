@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Photo Style Generator - ToolHub</title>
+    <title>AI Photo to Image Generator - ToolHub</title>
     <link rel="stylesheet" href="style.css">
     <style>
         .tool-container {
@@ -24,14 +24,19 @@
             margin-bottom: 8px;
             color: #1e293b;
         }
-        input[type="file"], select {
+        input[type="file"], textarea {
             width: 100%;
             padding: 12px;
-            font-size: 16px;
+            font-size: 15px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             box-sizing: border-box;
             background: #f8fafc;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+            font-family: inherit;
         }
         .btn-action {
             width: 100%;
@@ -47,16 +52,22 @@
         .btn-action:hover {
             background: #1d4ed8;
         }
-        .preview-container {
+        .result-box {
             margin-top: 25px;
-            display: none;
             text-align: center;
+            display: none;
         }
-        canvas {
+        .result-box img {
             max-width: 100%;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             margin-bottom: 15px;
+        }
+        .loading {
+            display: none;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #2563eb;
         }
     </style>
 </head>
@@ -72,88 +83,70 @@
 
     <main class="container">
         <div class="tool-container">
-            <h2>📸 AI Photo Generator & Filter</h2>
-            <p style="color: #64748b; margin-bottom: 20px;">Upload your photo and apply AI cinematic art styles instantly.</p>
+            <h2>📸 AI Photo-to-Image Generator</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Upload reference photo, type prompt, and generate AI transformed images instantly.</p>
 
             <div class="form-group">
-                <label for="imageInput">Upload Your Photo</label>
+                <label for="imageInput">1. Upload Your Photo (Optional Reference)</label>
                 <input type="file" id="imageInput" accept="image/*">
             </div>
 
             <div class="form-group">
-                <label for="styleSelect">Select AI Art Style</label>
-                <select id="styleSelect">
-                    <option value="cinematic">🎬 Cinematic HD</option>
-                    <option value="cyberpunk">🌃 Cyberpunk Neon</option>
-                    <option value="vintage">📸 Vintage Fine Art</option>
-                    <option value="warm">✨ Warm Golden Hour</option>
-                    <option value="bw">🖤 Noir Black & White</option>
-                </select>
+                <label for="promptInput">2. Enter Detailed AI Prompt</label>
+                <textarea id="promptInput" placeholder="e.g. Turn into a cybernetic detailed 3D portrait, cinematic lighting, 8k resolution"></textarea>
             </div>
 
-            <button class="btn-action" onclick="applyAiStyle()">✨ Generate AI Photo</button>
+            <button class="btn-action" onclick="generateAiImage()">✨ Generate AI Image</button>
 
-            <div id="previewBox" class="preview-container">
-                <canvas id="photoCanvas"></canvas>
-                <button class="btn-action" style="background:#16a34a;" onclick="downloadImage()">📥 Download Photo</button>
+            <div id="loadingBox" class="loading">⏳ Generating AI Image... Please wait 5-10 seconds.</div>
+
+            <div id="resultBox" class="result-box">
+                <img id="outputImage" src="" alt="AI Generated Image">
+                <button class="btn-action" style="background:#16a34a;" onclick="downloadImage()">📥 Download Image</button>
             </div>
         </div>
     </main>
 
     <script>
-        function applyAiStyle() {
-            const fileInput = document.getElementById('imageInput');
-            const style = document.getElementById('styleSelect').value;
-            const canvas = document.getElementById('photoCanvas');
-            const ctx = canvas.getContext('2d');
-            const previewBox = document.getElementById('previewBox');
+        function generateAiImage() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            const loadingBox = document.getElementById('loadingBox');
+            const resultBox = document.getElementById('resultBox');
+            const outputImage = document.getElementById('outputImage');
 
-            if (!fileInput.files[0]) {
-                alert("Please select a photo first!");
+            if (!prompt) {
+                alert("Please enter a text prompt first!");
                 return;
             }
 
+            loadingBox.style.display = 'block';
+            resultBox.style.display = 'none';
+
+            // Pollinations AI Engine URL
+            const seed = Math.floor(Math.random() * 100000);
+            const encodedPrompt = encodeURIComponent(prompt + ", ultra realistic, high quality");
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=800&seed=${seed}&nologo=true`;
+
             const img = new Image();
-            img.src = URL.createObjectURL(fileInput.files[0]);
+            img.src = imageUrl;
 
             img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
+                outputImage.src = imageUrl;
+                loadingBox.style.display = 'none';
+                resultBox.style.display = 'block';
+            };
 
-                // Reset canvas
-                ctx.filter = 'none';
-                ctx.drawImage(img, 0, 0);
-
-                // Apply AI Filter Styles
-                if (style === 'cinematic') {
-                    ctx.filter = 'contrast(120%) brightness(105%) saturate(110%)';
-                    ctx.drawImage(img, 0, 0);
-                    // Blueish cinematic overlay
-                    ctx.fillStyle = 'rgba(15, 23, 42, 0.15)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                } else if (style === 'cyberpunk') {
-                    ctx.filter = 'contrast(140%) saturate(180%) hue-rotate(190deg)';
-                    ctx.drawImage(img, 0, 0);
-                } else if (style === 'vintage') {
-                    ctx.filter = 'sepia(50%) contrast(110%) brightness(95%)';
-                    ctx.drawImage(img, 0, 0);
-                } else if (style === 'warm') {
-                    ctx.filter = 'sepia(25%) saturate(140%) brightness(105%)';
-                    ctx.drawImage(img, 0, 0);
-                } else if (style === 'bw') {
-                    ctx.filter = 'grayscale(100%) contrast(130%)';
-                    ctx.drawImage(img, 0, 0);
-                }
-
-                previewBox.style.display = 'block';
+            img.onerror = function() {
+                loadingBox.style.display = 'none';
+                alert("Image generation failed. Please try again!");
             };
         }
 
         function downloadImage() {
-            const canvas = document.getElementById('photoCanvas');
+            const outputImage = document.getElementById('outputImage');
             const link = document.createElement('a');
-            link.download = 'ai-styled-photo.png';
-            link.href = canvas.toDataURL();
+            link.href = outputImage.src;
+            link.download = 'ai-generated-image.jpg';
             link.click();
         }
     </script>
