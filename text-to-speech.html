@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech Generator - ToolHub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tool-container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 15px;
+            font-size: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        select, input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #334155;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-action {
+            flex: 1;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-action:hover {
+            background: #1d4ed8;
+        }
+        .btn-stop {
+            background: #dc2626;
+        }
+        .btn-stop:hover {
+            background: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">🛠️ ToolHub</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#tools-section">All Tools</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h2>🗣️ Text to Speech Generator</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Convert written text into natural spoken audio instantly.</p>
+
+            <textarea id="textInput" placeholder="Type or paste text here to convert to speech..."></textarea>
+
+            <div class="controls-grid">
+                <div>
+                    <label for="voiceSelect">Select Voice / Language</label>
+                    <select id="voiceSelect"></select>
+                </div>
+                <div>
+                    <label for="rate">Speed (<span id="rateVal">1</span>x)</label>
+                    <input type="range" id="rate" min="0.5" max="2" value="1" step="0.1">
+                </div>
+                <div>
+                    <label for="pitch">Pitch</label>
+                    <input type="range" id="pitch" min="0.5" max="2" value="1" step="0.1">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-action" onclick="speakText()">🔊 Speak</button>
+                <button class="btn-action btn-stop" onclick="stopSpeech()">⏹️ Stop</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const synth = window.speechSynthesis;
+        const textInput = document.getElementById('textInput');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const rate = document.getElementById('rate');
+        const pitch = document.getElementById('pitch');
+        const rateVal = document.getElementById('rateVal');
+
+        let voices = [];
+
+        function populateVoices() {
+            voices = synth.getVoices();
+            voiceSelect.innerHTML = '';
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute('data-lang', voice.lang);
+                option.setAttribute('data-name', voice.name);
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        populateVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = populateVoices;
+        }
+
+        rate.addEventListener('input', () => rateVal.textContent = rate.value);
+
+        function speakText() {
+            if (synth.speaking) synth.cancel();
+            if (textInput.value !== '') {
+                const speakUtterance = new SpeechSynthesisUtterance(textInput.value);
+                const selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+                
+                voices.forEach(voice => {
+                    if (voice.name === selectedOption) {
+                        speakUtterance.voice = voice;
+                    }
+                });
+
+                speakUtterance.rate = rate.value;
+                speakUtterance.pitch = pitch.value;
+                synth.speak(speakUtterance);
+            }
+        }
+
+        function stopSpeech() {
+            if (synth.speaking) synth.cancel();
+        }
+    </script>
+</body>
+</html>
+
